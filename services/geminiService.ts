@@ -1,11 +1,12 @@
 import { GoogleGenAI } from "@google/genai";
 import type { Scene, GeminiResponse, History, Content } from '../types';
 
-if (!process.env.API_KEY) {
-    throw new Error("API_KEY environment variable is not set.");
+const API_KEY = process.env.GEMINI_API_KEY || process.env.API_KEY;
+if (!API_KEY) {
+    throw new Error("GEMINI_API_KEY environment variable is not set.");
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey: API_KEY });
 
 // The instructions for the AI, including the JSON structure, are now part of the prompt.
 // This avoids using the `config` object which can cause issues with some network proxies.
@@ -136,3 +137,4 @@ export async function getNextScene(history: History, choice: string): Promise<{ 
         history: newHistory
     };
 }
+

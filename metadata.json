@@ -1,0 +1,6 @@
+{
+  "name": "Chaim's Adventure",
+  "description": "A dynamic text-based adventure game for Chaim, powered by Gemini and Imagen. Create your own story and see it come to life with AI-generated visuals.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}

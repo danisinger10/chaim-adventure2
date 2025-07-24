@@ -36,7 +36,7 @@ export const QuillIcon: React.FC<{ className?: string }> = ({ className }) => (
         <path d="M16 22h2"/>
         <path d="M18 22a2 2 0 1 0-4 0h4Z"/>
         <path d="m20 12-2-2"/>
-        <path d="M15 13-3.5 2.5"/>
+        <path d="M15 13l-3.5 2.5"/>
     </svg>
 );
 

@@ -7,11 +7,20 @@ import { useEffect, useRef } from 'react';
  */
 export default function useVoiceNarration(text: string | null, enabled: boolean) {
   const synthRef = useRef<SpeechSynthesis | null>(null);
-  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const lastTextRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!enabled || !text) {
       synthRef.current?.cancel();
+      lastTextRef.current = null;
+      return;
+    }
+
+    if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) {
+      return;
+    }
+
+    if (lastTextRef.current === text) {
       return;
     }
 
@@ -20,13 +29,14 @@ export default function useVoiceNarration(text: string | null, enabled: boolean)
     utterance.rate = 1;
     utterance.pitch = 1;
     utterance.lang = 'en-US';
-    utteranceRef.current = utterance;
 
     synthRef.current.cancel();
     synthRef.current.speak(utterance);
+    lastTextRef.current = text;
 
     return () => {
       synthRef.current?.cancel();
     };
   }, [text, enabled]);
 }
+

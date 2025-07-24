@@ -1,10 +1,12 @@
 import React from 'react';
 import type { Scene } from '../types';
 import { SwordIcon, ChevronRightIcon } from './icons';
+import useVoiceNarration from '../hooks/useVoiceNarration';
 
 interface GameScreenProps {
   scene: Scene;
   onChoice: (choice: string) => void;
+  voiceEnabled: boolean;
 }
 
 // A simple component to parse and render markdown-style bolding
@@ -25,9 +27,11 @@ const FormattedText: React.FC<{ text: string; className?: string; style?: React.
   );
 };
 
-const GameScreen: React.FC<GameScreenProps> = ({ scene, onChoice }) => {
+const GameScreen: React.FC<GameScreenProps> = ({ scene, onChoice, voiceEnabled }) => {
   // Split description into paragraphs, filtering out empty lines
   const paragraphs = scene.description.split('\n').filter(p => p.trim());
+
+  useVoiceNarration(scene.description, voiceEnabled);
 
   return (
     <div className="w-full max-w-4xl p-4 md:p-6 bg-gray-800/50 rounded-2xl shadow-2xl border border-gray-700 backdrop-blur-sm animate-fade-in-screen">

@@ -4,13 +4,14 @@ import StartScreen from './components/StartScreen';
 import GameScreen from './components/GameScreen';
 import { getInitialScene, getNextScene } from './services/geminiService';
 import LoadingIndicator from './components/LoadingIndicator';
-import { WandIcon } from './components/icons';
+import { WandIcon, VolumeIcon } from './components/icons';
 
 const App: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>(GameState.START);
   const [scene, setScene] = useState<Scene | null>(null);
   const [history, setHistory] = useState<History | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [voiceEnabled, setVoiceEnabled] = useState<boolean>(false);
 
   // This effect handles any inconsistent state where we are in PLAYING mode without a scene.
   useEffect(() => {
@@ -77,7 +78,13 @@ const App: React.FC = () => {
         // The useEffect hook will redirect to ERROR state if scene is null,
         // but as a fallback, we can show a loading indicator.
         if (scene) {
-          return <GameScreen scene={scene} onChoice={handlePlayerChoice} />;
+          return (
+            <GameScreen
+              scene={scene}
+              onChoice={handlePlayerChoice}
+              voiceEnabled={voiceEnabled}
+            />
+          );
         }
         return <LoadingIndicator />; // Show loading while waiting for state to resolve.
       case GameState.ERROR:
@@ -106,6 +113,13 @@ const App: React.FC = () => {
           <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">
             Chaim's Adventure
           </h1>
+          <button
+            onClick={() => setVoiceEnabled(v => !v)}
+            className="ml-4 p-2 rounded-full bg-gray-700/70 hover:bg-indigo-600 transition-colors"
+            title="Toggle narration"
+          >
+            <VolumeIcon className="h-6 w-6 text-indigo-300" />
+          </button>
         </div>
         <p className="text-gray-400 mt-2">Your dynamic, AI-powered text adventure</p>
       </header>
